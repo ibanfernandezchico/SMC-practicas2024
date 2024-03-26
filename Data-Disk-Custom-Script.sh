@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Obtener el nombre del grupo de recursos de la VM
+resourceGroupName=$(az vm show -g $(az vm list --query "[?name=='SMC-VM01-Alastria'].resourceGroup" -o tsv) -n SMC-VM01-Alastria --query "resourceGroup" -o tsv)
+
 # Obtener el ID del disco de datos
-diskId=$(az vm show -g ${resourceGroup().name} -n SMC-VM01-Alastria --query "storageProfile.dataDisks[0].managedDisk.id" -o tsv)
+diskId=$(az vm show -g $resourceGroupName -n SMC-VM01-Alastria --query "storageProfile.dataDisks[0].managedDisk.id" -o tsv)
 
 # Formatear el disco de datos
 sudo mkfs.ext4 $diskId
